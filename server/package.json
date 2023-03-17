@@ -1,7 +1,8 @@
 {
   "scripts": {
     "start": "ts-node src/main.ts",
-    "dev": "nodemon src/main.ts"
+    "dev": "nodemon src/main.ts",
+    "lint": "eslint './src/**/*.ts'"
   },
   "dependencies": {
     "nodemon": "^2.0.21",
@@ -9,6 +10,9 @@
     "typescript": "^5.0.2"
   },
   "devDependencies": {
-    "@types/node": "^18.15.3"
+    "@types/node": "^18.15.3",
+    "@typescript-eslint/eslint-plugin": "^5.55.0",
+    "@typescript-eslint/parser": "^5.55.0",
+    "eslint": "^8.36.0"
   }
 }
