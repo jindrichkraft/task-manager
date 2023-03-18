@@ -12,4 +12,5 @@ export const AUTH_TOKEN_EXPIRATION_IN_HOURS = 18;
 // Error Codes
 export const BAD_REQUEST_CODE = 400;
 export const UNAUTHORIZED_CODE = 401;
+export const FORBIDDEN_CODE = 401;
 export const SERVER_ERROR_CODE = 500;
