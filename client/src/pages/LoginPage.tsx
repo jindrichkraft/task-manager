@@ -1,11 +1,20 @@
 import { useFormik } from 'formik';
 
 import DefaultLayout from '../layouts/DefaultLayout';
+import { useAuth } from '../hooks/auth';
 import { loginSchema } from '../schemas/auth';
 
 const LoginPage = (): JSX.Element => {
+  const { handleLogin } = useAuth();
+
   const onSubmit = async () => {
-    console.log('a');
+    const authData = await handleLogin({
+      username: values.username,
+      password: values.password,
+    });
+    if (authData && !authData.success) {
+      if (authData.message) alert(authData.message);
+    }
   };
 
   const {
