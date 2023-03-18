@@ -4,6 +4,10 @@ import bcrypt from 'bcrypt';
 import { pool } from '../main';
 import { generateTokenData } from '../utils/auth';
 import {
+  FIND_USER_BY_USERNAME_QUERY,
+  CREATE_NEW_USER_QUERY,
+} from '../queries/auth';
+import {
   PASSWORD_SALT_ROUNDS,
   BAD_REQUEST_CODE,
   UNAUTHORIZED_CODE,
@@ -22,10 +26,9 @@ authRouter.post('/register', async (req, res) => {
         data: null,
       });
 
-    const existingUser = await pool.query(
-      'SELECT * FROM Users WHERE LOWER(username) = LOWER($1)',
-      [username.toLowerCase()]
-    );
+    const existingUser = await pool.query(FIND_USER_BY_USERNAME_QUERY, [
+      username.toLowerCase(),
+    ]);
     if (existingUser.rowCount !== 0)
       return res.status(UNAUTHORIZED_CODE).json({
         success: false,
@@ -36,10 +39,11 @@ authRouter.post('/register', async (req, res) => {
     const salt = await bcrypt.genSalt(PASSWORD_SALT_ROUNDS);
     const hashedPassword = await bcrypt.hash(password, salt);
     const newUser = (
-      await pool.query(
-        'INSERT INTO Users (username, display_name, password) VALUES ($1, $2, $3) RETURNING *',
-        [username, displayName, hashedPassword]
-      )
+      await pool.query(CREATE_NEW_USER_QUERY, [
+        username,
+        displayName,
+        hashedPassword,
+      ])
     ).rows[0];
 
     return res.json({
@@ -67,10 +71,9 @@ authRouter.post('/login', async (req, res) => {
         data: null,
       });
 
-    const existingUser = await pool.query(
-      'SELECT * FROM Users WHERE LOWER(username) = LOWER($1)',
-      [username.toLowerCase()]
-    );
+    const existingUser = await pool.query(FIND_USER_BY_USERNAME_QUERY, [
+      username.toLowerCase(),
+    ]);
     if (existingUser.rowCount === 0)
       return res.status(UNAUTHORIZED_CODE).json({
         success: false,
