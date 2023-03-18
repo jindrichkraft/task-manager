@@ -2,12 +2,18 @@ import jsonwebtoken from 'jsonwebtoken';
 
 import { UNAUTHORIZED_CODE, FORBIDDEN_CODE } from '../utils/constants';
 
-import type { Response, NextFunction } from 'express';
+import type { RequestHandler, Response, Request, NextFunction } from 'express';
 
 import type { IGetUserAuthInfoRequest } from '../typings/auth';
 
-export const authorize = (
-  req: IGetUserAuthInfoRequest,
+declare module 'express-serve-static-core' {
+  export interface Request {
+    user: IGetUserAuthInfoRequest['user'];
+  }
+}
+
+export const authorize: RequestHandler = (
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {

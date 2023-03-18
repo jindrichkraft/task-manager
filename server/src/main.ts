@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import { Pool } from 'pg';
 
 import authRouter from './routes/auth';
+import profileRouter from './routes/profile';
 import {
   DEFAULT_EXPRESS_PORT,
   DEFAULT_POSTGRES_PORT,
@@ -27,6 +28,7 @@ export const pool = new Pool({
 });
 
 app.use('/auth', authRouter);
+app.use('/profile', profileRouter);
 
 app.listen(expressPort, () => {
   console.log(`[STATUS] Express listening on port ${expressPort}...`);
