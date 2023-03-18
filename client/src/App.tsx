@@ -6,6 +6,9 @@ import ProfilePage from './pages/ProfilePage';
 import LogoutPage from './pages/LogoutPage';
 import { useAuth } from './hooks/auth';
 
+import './styles/reset.scss';
+import './styles/main.scss';
+
 interface IProtectedRouteProps {
   condition: boolean;
   fallbackPath: string;
