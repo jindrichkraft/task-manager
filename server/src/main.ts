@@ -3,6 +3,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import { Pool } from 'pg';
 
+import authRouter from './routes/auth';
 import {
   DEFAULT_EXPRESS_PORT,
   DEFAULT_POSTGRES_PORT,
@@ -24,6 +25,8 @@ export const pool = new Pool({
   database: process.env.DB_NAME ?? '',
   port: postgresPort,
 });
+
+app.use('/auth', authRouter);
 
 app.listen(expressPort, () => {
   console.log(`[STATUS] Express listening on port ${expressPort}...`);
