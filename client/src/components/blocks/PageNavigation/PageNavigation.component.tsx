@@ -7,6 +7,9 @@ const PageNavigation = (): JSX.Element => (
       <li>
         <Link to="/">Home</Link>
       </li>
+      <li>
+        <Link to="/login">Sign in</Link>
+      </li>
     </ul>
   </nav>
 );
