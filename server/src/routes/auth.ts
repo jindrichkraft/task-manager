@@ -58,4 +58,53 @@ authRouter.post('/register', async (req, res) => {
   }
 });
 
+authRouter.post('/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    if (!username || !password)
+      return res.status(BAD_REQUEST_CODE).json({
+        success: false,
+        message: 'Invalid input data!',
+        data: null,
+      });
+
+    const existingUser = await pool.query(
+      'SELECT * FROM Users WHERE LOWER(username) = LOWER($1)',
+      [username.toLowerCase()]
+    );
+    if (existingUser.rowCount === 0)
+      return res.status(UNAUTHORIZED_CODE).json({
+        success: false,
+        message: 'User with this username does not exist!',
+        data: null,
+      });
+
+    const validPassword = await bcrypt.compare(
+      password,
+      existingUser.rows[0].password
+    );
+    if (!validPassword)
+      return res.status(UNAUTHORIZED_CODE).json({
+        success: false,
+        message: 'Invalid password!',
+        data: null,
+      });
+
+    return res.status(UNAUTHORIZED_CODE).json({
+      success: true,
+      message: 'Successfully logged in!',
+      data: {
+        validPassword,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(SERVER_ERROR_CODE).json({
+      success: false,
+      message: 'Server error!',
+      data: null,
+    });
+  }
+});
+
 export default authRouter;
