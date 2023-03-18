@@ -2,6 +2,7 @@ import { Router } from 'express';
 import bcrypt from 'bcrypt';
 
 import { pool } from '../main';
+import { generateTokenData } from '../utils/auth';
 import {
   PASSWORD_SALT_ROUNDS,
   BAD_REQUEST_CODE,
@@ -44,9 +45,7 @@ authRouter.post('/register', async (req, res) => {
     return res.json({
       success: true,
       message: 'Successfully created user!',
-      data: {
-        id: newUser.user_id,
-      },
+      data: generateTokenData(newUser.user_id),
     });
   } catch (error) {
     console.log(error);
@@ -90,12 +89,10 @@ authRouter.post('/login', async (req, res) => {
         data: null,
       });
 
-    return res.status(UNAUTHORIZED_CODE).json({
+    return res.json({
       success: true,
       message: 'Successfully logged in!',
-      data: {
-        validPassword,
-      },
+      data: generateTokenData(existingUser.rows[0].user_id),
     });
   } catch (error) {
     console.log(error);

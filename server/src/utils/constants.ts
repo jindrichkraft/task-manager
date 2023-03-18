@@ -6,6 +6,8 @@ export const DEFAULT_POSTGRES_HOST = 'localhost';
 
 // Auth
 export const PASSWORD_SALT_ROUNDS = 10;
+export const AUTH_TOKEN_TYPE = 'Bearer';
+export const AUTH_TOKEN_EXPIRATION_IN_HOURS = 18;
 
 // Error Codes
 export const BAD_REQUEST_CODE = 400;
